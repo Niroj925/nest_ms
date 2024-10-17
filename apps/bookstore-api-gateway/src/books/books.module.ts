@@ -13,7 +13,10 @@ import { config } from 'process';
       {
         name:BOOKS_CLIENT,
         transport:Transport.TCP,
-        options:{port:3002}
+        options:{
+          host:'127.0.0.1',
+          port:3002
+        }
       }
     ])
   ],

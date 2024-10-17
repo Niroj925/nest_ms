@@ -11,7 +11,6 @@ export class BooksController {
 
   @MessagePattern(BOOKS_PATTERN.CREATE)
   create(@Payload() createBookDto: CreateBookDto) {
-    console.log(createBookDto)
     return this.booksService.create(createBookDto);
   }
 

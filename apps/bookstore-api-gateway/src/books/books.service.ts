@@ -13,17 +13,17 @@ export class BooksService {
     @Inject(BOOKS_CLIENT) private booksClient:ClientProxy,
   ){}
 
-  private mapBookDto(bookDto:CreateBookDto):bookDto{
-    return{
-      id:bookDto.id,
-      title:bookDto.title,
-    }
-  }
+  // private mapBookDto(bookDto:CreateBookDto):bookDto{
+  //   return{
+  //     id:bookDto.id,
+  //     title:bookDto.title,
+  //   }
+  // }
  async create(createBookDto: CreateBookDto) {
     return this.booksClient.send(
-      BOOKS_PATTERN.CREATE,this.booksClient
+      BOOKS_PATTERN.CREATE,createBookDto
     )
-    .pipe(map(this.mapBookDto));
+    // .pipe(map(this.mapBookDto));
   }
 
   findAll() {
