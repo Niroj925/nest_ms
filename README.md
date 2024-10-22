@@ -82,6 +82,7 @@ Make sure you have the following installed:
          }
     ```
 5. Connecting to a microservices:
+  
    **Add a user module to the gateway application**
    ```bash
    nest generate module user --project bookstore-api-gateway
