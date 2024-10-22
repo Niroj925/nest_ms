@@ -31,66 +31,66 @@ Make sure you have the following installed:
 4. Remove the initial bookstore app and update the nest-cli.json where remove bookstore related        configuration final is like this.
     ```bash
        {
-  "$schema": "https://json.schemastore.org/nest-cli",
-  "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/bookstore-api-gateway/src",
-  "compilerOptions": {
-    "deleteOutDir": true,
-    "webpack": true,
-    "tsConfigPath": "apps/bookstore-api-gateway/tsconfig.app.json"
-  },
-  "monorepo": true,
-  "root": "apps/bookstore-api-gateway",
-  "projects": {
-    "bookstore-api-gateway": {
-      "type": "application",
-      "root": "apps/bookstore-api-gateway",
-      "entryFile": "main",
-      "sourceRoot": "apps/bookstore-api-gateway/src",
-      "compilerOptions": {
+        "$schema": "https://json.schemastore.org/nest-cli",
+        "collection": "@nestjs/schematics",
+        "sourceRoot": "apps/bookstore-api-gateway/src",
+        "compilerOptions": {
+        "deleteOutDir": true,
+        "webpack": true,
         "tsConfigPath": "apps/bookstore-api-gateway/tsconfig.app.json"
-      }
-    },
-    "users": {
-      "type": "application",
-      "root": "apps/users",
-      "entryFile": "main",
-      "sourceRoot": "apps/users/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/users/tsconfig.app.json"
-      }
-    },
-    "books": {
-      "type": "application",
-      "root": "apps/books",
-      "entryFile": "main",
-      "sourceRoot": "apps/books/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/books/tsconfig.app.json"
-      }
-    },
-    "contract": {
-      "type": "library",
-      "root": "libs/contract",
-      "entryFile": "index",
-      "sourceRoot": "libs/contract/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/contract/tsconfig.lib.json"
-      }
-    }
-  }
-}
+        },
+       "monorepo": true,
+       "root": "apps/bookstore-api-gateway",
+        "projects": {
+              "bookstore-api-gateway": {
+              "type": "application",
+              "root": "apps/bookstore-api-gateway",
+              "entryFile": "main",
+              "sourceRoot": "apps/bookstore-api-gateway/src",
+              "compilerOptions": {
+                "tsConfigPath": "apps/bookstore-api-gateway/tsconfig.app.json"
+              }
+          },
+          "users": {
+              "type": "application",
+              "root": "apps/users",
+              "entryFile": "main",
+              "sourceRoot": "apps/users/src",
+              "compilerOptions": {
+                "tsConfigPath": "apps/users/tsconfig.app.json"
+              }
+            },
+           "books": {
+              "type": "application",
+              "root": "apps/books",
+              "entryFile": "main",
+              "sourceRoot": "apps/books/src",
+              "compilerOptions": {
+                "tsConfigPath": "apps/books/tsconfig.app.json"
+              }
+            },
+            "contract": {
+              "type": "library",
+              "root": "libs/contract",
+              "entryFile": "index",
+              "sourceRoot": "libs/contract/src",
+              "compilerOptions": {
+                "tsConfigPath": "libs/contract/tsconfig.lib.json"
+              }
+            }
+          }
+         }
     ```
 5. Connecting to a microservices:
-   **Add a user module to the gateway application
+   **Add a user module to the gateway application**
    ```bash
    nest generate module user --project bookstore-api-gateway
    ```
-    **Add a user service to the gateway application
+    **Add a user service to the gateway application**
    ```bash
    nest generate service user --project bookstore-api-gateway
    ```
-    **Add a user controller to the gateway application
+    **Add a user controller to the gateway application**
    ```bash
    nest generate controller user --project bookstore-api-gateway
    ```
