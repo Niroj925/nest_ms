@@ -1,86 +1,118 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+#Book Store Microservice project
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is a scallable,maintable and well structured Microservice project
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Getting Started
 
-## Description
+  To run this project locally, follow the instructions below:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Prerequisites
 
-## Project setup
+Make sure you have the following installed:
+- [Node.js](https://nodejs.org/) (>= 14.x.x)
+- [npm](https://www.npmjs.com/) (>= 6.x.x)
 
-```bash
-$ npm install
-```
+### Installation
+1. Create a nest project:
+   ```bash
+   nest new bookstore
+   ```
+2. Convert the standard nestjs project into monorepo and create the API gateway:
+   ```bash
+   nest generate app bookstore-api-gateway
+   ```
+3. Create services:
+   ```bash
+   nest generate app users
+   ```
+   ```bash
+   nest generate app books
+   ```
+4. Remove the initial bookstore app and update the nest-cli.json where remove bookstore related        configuration final is like this.
+    ```bash
+       {
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/bookstore-api-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/bookstore-api-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/bookstore-api-gateway",
+  "projects": {
+    "bookstore-api-gateway": {
+      "type": "application",
+      "root": "apps/bookstore-api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/bookstore-api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/bookstore-api-gateway/tsconfig.app.json"
+      }
+    },
+    "users": {
+      "type": "application",
+      "root": "apps/users",
+      "entryFile": "main",
+      "sourceRoot": "apps/users/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/users/tsconfig.app.json"
+      }
+    },
+    "books": {
+      "type": "application",
+      "root": "apps/books",
+      "entryFile": "main",
+      "sourceRoot": "apps/books/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/books/tsconfig.app.json"
+      }
+    },
+    "contract": {
+      "type": "library",
+      "root": "libs/contract",
+      "entryFile": "index",
+      "sourceRoot": "libs/contract/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/contract/tsconfig.lib.json"
+      }
+    }
+  }
+}
+    ```
+5. Connecting to a microservices:
+   **Add a user module to the gateway application
+   ```bash
+   nest generate module user --project bookstore-api-gateway
+   ```
+    **Add a user service to the gateway application
+   ```bash
+   nest generate service user --project bookstore-api-gateway
+   ```
+    **Add a user controller to the gateway application
+   ```bash
+   nest generate controller user --project bookstore-api-gateway
+   ```
+   same for books app too.
 
-## Compile and run the project
+6. Generate the resource in books app and select Microservices
+    ```bash
+   nest generate resource books --project books
+   ```
+7. Generate the resource in bookstore-api-gateway and select REST for CRUD operation
+    ```bash
+   nest generate resource books --project bookstore-api-gateway
+   ```
+8. Generate a new library for contract
+    ```bash
+   nest generate library contracts
+   ```
+9. Copy DTOs from the books application to the contracts library
+    ```bash
+   cp apps/books/src/books/dto/* libs/contracts/src/books
+   ```
 
-```bash
-# development
-$ npm run start
+ 
 
-# watch mode
-$ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-# nest_ms
